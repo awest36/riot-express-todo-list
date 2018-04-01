@@ -18,7 +18,7 @@ function cloneRepo() {
 	console.log("Cloning repo...");
 	// delete old copy of repo. Then, clone a fresh copy of repo from GitHub
 	cmd.get(
-		'rm -rf hackathon-starter && git clone https://github.com/awest36/riot-express-todo-list.git',
+		'rm -rf riot-express-todo-list && git clone https://github.com/awest36/riot-express-todo-list.git',
 		function(err, data, stderr){
 			console.log("cloneRepo callback\n\t err: " + err + "\n\t data: " + data + "\n\t stderr: " + stderr);
 			if(err == null){
@@ -30,7 +30,7 @@ function cloneRepo() {
 
 // transfers local project to the remote server
 function transferProjectToRemote(failed, successful) {
-	return ssh.putDirectory(__dirname + '/hackathon-starter', '/home/ubuntu/hackathon-starter-temp', {
+	return ssh.putDirectory(__dirname + '/riot-express-todo-list', '/home/ubuntu/riot-express-todo-list-temp', {
 		recursive: true,
 		concurrency: 1,
 		validate: function(itemPath) {
@@ -52,7 +52,7 @@ function transferProjectToRemote(failed, successful) {
 
 // creates a temporary folder on the remote server
 function createRemoteTempFolder() {
-	return ssh.execCommand('rm -rf hackathon-starter-temp && mkdir hackathon-starter-temp', { cwd:'/home/ubuntu' })
+	return ssh.execCommand('rm -rf riot-express-todo-list-temp && mkdir riot-express-todo-list-temp', { cwd:'/home/ubuntu' })
 }
 
 // stops mongodb and node services on the remote server
@@ -62,7 +62,7 @@ function stopRemoteServices() {
 
 // updates the project on the server
 function updateRemoteApp() {
-	return ssh.execCommand('cp -r hackathon-starter-temp/* hackathon-starter/ && rm -rf hackathon-starter-temp/*', { cwd:'/home/ubuntu' })
+	return ssh.execCommand('cp -r riot-express-todo-list-temp/* riot-express-todo-list/ && rm -rf riot-express-todo-list-temp/*', { cwd:'/home/ubuntu' })
 }
 
 // restart mongodb and node services on the remote server
@@ -84,7 +84,7 @@ function sshConnect() {
 		console.log("SSH Connection established.");
 
 		// Create "hackathon-starter-temp" directory on remote server
-		console.log("Creating `hackathon-starter-temp` folder.");
+		console.log("Creating `riot-express-todo-list-temp` folder.");
 
 		return createRemoteTempFolder();
 	})
